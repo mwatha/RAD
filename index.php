@@ -19,6 +19,8 @@ if(strlen($_SESSION['username']) > 0) {
 <html>
 <head>
 
+<script type="text/javascript" src="javascript/dateformat.js"></script>
+
 <style type="text/css">
 html {
     overflow: auto;
@@ -73,6 +75,11 @@ body {
   background-color: #D0D8DF;
   margin-top: 30px;
   padding: 20px 10px 20px 10px;
+}
+
+#user-details a {
+ color: black;
+ text-decoration: none; 
 }
 
 #menu-bar a {
@@ -201,11 +208,23 @@ body {
 
     <div id ="user-details">Welcome&nbsp;
       <span style="color:OrangeRed;"><?php echo $r[2].' '.$r[3]; ?></span>
+      &nbsp;|&nbsp;<a href="#">Logout</a>
+      <span style="color:black;float:right;" id ="time"></span>
     </div>
 
   </div>
 
 </body>
 
+<script>
+  
+  function displayDateTime() {
+    var displayTime = document.getElementById("time");
+    displayTime.innerHTML = (new Date()).getHours() + ":" + (new Date()).getMinutes() 
+    + "&nbsp;|&nbsp;" + dateFormat(new Date(),"dddd, mmmm dS, yyyy");
+  }
 
+  displayDateTime();
+  setInterval("displayDateTime();",1000);
+</script>
 </html>
