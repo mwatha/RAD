@@ -11,6 +11,7 @@ body {
  margin: auto;
  padding: 0;
  width: 1020px;
+ height: 70%;
 }
 
 #menu-bar {
@@ -49,6 +50,7 @@ body {
   background-color: white; 
   padding-left: 20px;
   height: 80%;
+  overflow: auto;
 }
 
 #user-details {

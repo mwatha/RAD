@@ -11,6 +11,7 @@ body {
  margin: auto;
  padding: 0;
  width: 1020px;
+ height: 70%;
 }
 
 #menu-bar {
@@ -80,9 +81,9 @@ body {
   background-color: #6598CC;
   border-radius: 37px 37px 37px 37px;
   height: 160px;
-  left: 625px;
+  left: 520px;
   position: absolute;
-  top: 45%;
+  top: 30%;
   width: 375px;
 }
 

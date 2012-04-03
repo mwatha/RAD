@@ -47,6 +47,7 @@ body {
  margin: auto;
  padding: 0;
  width: 1020px;
+ height: 70%;
 }
 
 #menu-bar {

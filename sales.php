@@ -46,6 +46,8 @@ xmlhttp.send();
   function select(customer_id) {
     var salesDetails = document.getElementById("sales_details");
     var searchItem = document.getElementById("search_item");
+    total =  document.getElementById('total_amount');
+    total.innerHTML = "<td colspan='7'>&nbsp;</td>";
 
     if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
       xmlhttp=new XMLHttpRequest();
@@ -63,7 +65,7 @@ xmlhttp.send();
         if(selected_customer_name == '' || selected_customer_name == null){
           return;
         }
-        html += "<td style='text-align:left;padding-left:5px;'>" + selected_customer_name + "</td>";
+        html += "<td class='cname' style='text-align:left;padding-left:5px;'>" + selected_customer_name + "</td>";
         html += "<td style='text-align:center;'>" + selected_customer_email + "</td>";
         html += "<td style='text-align:center;' class='blank_item'>&nbsp;</td>";
         html += "<td style='text-align:center;' class='blank_price'>&nbsp;</td>";
@@ -110,8 +112,9 @@ xmlhttp.send();
           }
 
           html += "<tr>";
-          html += "<td style='text-align:center;'><a href='#' onclick='selectItem(" + item_id + ")'>" + name + "</a></td>";
-          html += "<td style='text-align:center;'><span style='color:purple'>Unit price</span>&nbsp;" + price + " MK</td>";
+          html += "<td style='text-align:left;padding-left:10px;'>" + name + "</td>";
+          html += "<td style='text-align:left;padding-left:10px;'><span style='color:purple'>Unit price</span>&nbsp;" + price + " MK</td>";
+          html += "<td style='text-align:center;'><button onclick='selectItem(" + item_id + ")'>Add</button></td>";
           html += "</tr>";
           item_name[item_id] = name;
           item_price[item_id] = price;
@@ -147,7 +150,7 @@ xmlhttp.send();
 
       newTable =  "<td colspan='6'><table id='sales_details_table'>";
       for(var i = 0; i < itemNameTD.length; i++){
-        newTable += "<tr><td style='text-align:left;padding-left:5px;width:140px;font-size:12px;'>" + selected_customer_name + "</td>";
+        newTable += "<tr><td class='cname' style='text-align:left;padding-left:5px;width:140px;font-size:12px;'>" + selected_customer_name + "</td>";
         newTable += "<td style='text-align:center;width:100px;font-size:12px;'>" + selected_customer_email + "</td>";
         newTable += "<td style='text-align:center;width:80px;font-size:12px;' class='blank_item'>" + itemNameTD[i].innerHTML + "</td>";
         for(var x = 0; x < itemPriceTD.length; x++){
@@ -170,7 +173,7 @@ xmlhttp.send();
       }
       
       var newRow = document.getElementById("sales_details");
-      newTable += "<tr><td style='text-align:left;padding-left:5px;width:140px;font-size:12px;'>" + selected_customer_name + "</td>";
+      newTable += "<tr><td class='cname' style='text-align:left;padding-left:5px;width:140px;font-size:12px;'>" + selected_customer_name + "</td>";
       newTable += "<td style='text-align:center;width:100px;font-size:12px;'>" + selected_customer_email + "</td>";
       newTable += "<td style='text-align:center;width:80px;font-size:12px;' class='blank_item'>&nbsp;</td>";
       newTable += "<td style='text-align:center;width:20px;font-size:12px;' class='blank_price'>&nbsp;</td>";
@@ -250,7 +253,52 @@ xmlhttp.send();
                                                                                 
   function redirectHome() {                                                     
     document.location = "index.php";                                            
-  }                                                                             
+  }                          
+  
+  
+  function processOrder() {
+    itemPriceTD = document.getElementsByClassName('blank_price');               
+    itemNameTD = document.getElementsByClassName('blank_item');                 
+    customerName = document.getElementsByClassName('cname');         
+    itemTotalTD = document.getElementsByClassName('item_total');               
+    quantityValues = document.getElementsByClassName('quantity_values');
+
+    selectItems = {}
+
+    for(var i = 0; i < itemTotalTD.length; i++) {
+      if(itemTotalTD[i].innerHTML.length > 0){
+        name = itemNameTD[i].innerHTML;                                        
+        price = itemPriceTD[i].innerHTML;
+        quantity = quantityValues[i].value;         
+        cname = customerName[i].innerHTML;                             
+        selected_item_id = quantityValues[i].id.split("quantity")[0];
+
+        selectItems[name] = quantity + ";" + price + ";" + cname;
+      }
+    }
+
+    var str = "";
+
+    for(key in selectItems) {
+      if(str==""){
+        str = key + ";" + selectItems[key];
+      }else{
+        str+= "," + key + ";" + selectItems[key];
+      }
+    }
+
+    submitForm = document.getElementById("orders");                        
+                                                                                
+    newElement = document.createElement("input");                               
+    newElement.setAttribute("name","orders");      
+    newElement.setAttribute("type","hidden");                                   
+    newElement.value = str;                                               
+    submitForm.appendChild(newElement);
+
+    submitForm.submit();                                                        
+    return;
+
+  }                                                   
 </script>
 
 
@@ -292,6 +340,7 @@ body {
  margin: auto;
  padding: 0;
  width: 1020px;
+ height: 70%;
 }
 
 #sales_details_table {
@@ -339,6 +388,7 @@ body {
   background-color: white; 
   padding-left: 20px;
   height: 80%;
+  overflow: auto;
 }
 
 #user-details {
@@ -462,6 +512,12 @@ body {
                     name ="add" class="buttons" 
                     onclick="javascript:location='customer_details'"/></td>
               </tr>
+              <tr>
+                <td class="link-button" width="10">&nbsp;</td>
+                <td><input type="button" value="Process order" 
+                    name ="add" class="buttons" 
+                    onclick="processOrder();"/></td>
+              </tr>
             </table>
           </td>
         <!-- -->
@@ -490,4 +546,8 @@ body {
   displayDateTime();
   setInterval("displayDateTime();",1000);
 </script>
+
+<form id="orders" method="post" action="createorder.php" type="hidden">
+</form>
+
 </html>
