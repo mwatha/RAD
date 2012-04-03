@@ -1,7 +1,6 @@
-<?php session_start(); 
-require 'encryption.php';
-?>
+<?php session_start(); ?>
 
+<script type="text/javascript" src="javascript/encryption.js"></script>
 <script>
 
   function successfullLogin() {
@@ -18,14 +17,21 @@ require 'encryption.php';
 $db = mysql_pconnect("localhost","root","letusout");                        
 mysql_select_db("supply_concepts", $db);      
  
-$fname = encrypt($_POST["fname"]);                                                       
-$lname = encrypt($_POST["lname"]);                                                       
-$dob = $_POST["birthdate"]; 
-$job = encrypt($_POST["job"]);
-$sex = $_POST["gender"]; 
-$username = encrypt($_POST["username"]);                                                   
-$email = encrypt($_POST["email"]);                                                   
-$password = md5($_POST["password"]);                                                   
+echo 'fname';
+exit;
+$fname = ?><script>encrypt(<?php $_POST["fname"]; ?>);</script>                                                       
+
+<?php echo $fname;
+exit;
+
+$fname = ?><script>encrypt(<?php $_POST["fname"]; ?>);</script>                                                       
+<?php $lname = ?><script>encrypt(<?php $_POST["lname"]; ?>)</script>                                                      
+<?php $dob = ?><script>encrypt(<?php $_POST["birthdate"];?>)</script> 
+<?php $job = ?><script>encrypt(<?php $_POST["job"];?>)</script>
+<?php $sex = ?><script><?php $_POST["gender"];?>)</script> 
+<?php $username = ?><script><?php $_POST["username"];?></script>                                                   
+<?php $email = ?><script><?php $_POST["email"];?></script>                                                   
+<?php $password = md5($_POST["password"]);                                                   
 
 $hour =  date("G") - 1;                                                         
 if ($hour < 9) {                                                                
@@ -37,6 +43,10 @@ $datetime = date("Y-m-d ").$time;
 
 $query = "INSERT INTO users VALUES(NULL,'$username','$fname','$lname','$sex',
          '$dob','$email','$password','$job','$datetime');";                                     
+
+echo $query;
+exit;
+ 
 mysql_query($query,$db); 
 
 

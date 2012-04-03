@@ -80,7 +80,7 @@ body {
   background-color: #6598CC;
   border-radius: 37px 37px 37px 37px;
   height: 160px;
-  left: 530px;
+  left: 625px;
   position: absolute;
   top: 45%;
   width: 375px;
@@ -131,14 +131,14 @@ body {
     <div id="content-area">
       <!-- start -->
         <div id="content-login-area">
-          <table><form action="index" method="post">
+          <table><form action="authenticate.php" method="post">
             <tr>
               <td>Username</td>
               <td><input type="text" name="username"/></td>
             </tr>
             <tr>
               <td>Password</td>
-              <td><input type="password" name="username"/></td>
+              <td><input type="password" name="password"/></td>
             </tr>
             <tr>
               <td colspan="2" style="text-align:right;padding-right:20px;">
@@ -155,7 +155,7 @@ body {
       <!-- end -->
     </div>
 
-    <div id ="user-details">Welcome&nbsp;user:&nbsp;<span>please login to continue<span></div>
+    <div id ="user-details">Welcome&nbsp;user:&nbsp;<span style="color:OrangeRed;">please login to continue<span></div>
 
   </div>
 

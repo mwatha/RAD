@@ -108,16 +108,23 @@ body {
   text-align: center;
 }
 
-.link-button a {
-  color: #6598CC;
- }
-
 .link-button {
-  width: 100%;
+  color: #6598CC;
+  width: 10%;
+  font-size: 40px;
+  text-align: center;
 }
 
-.description {
+.buttons {
   font-size: 12px;
+  width: 110px;
+}
+
+.header-form {
+  font-size: 16px;
+  width: 30%;
+  float: right;
+  text-align: right;
 }
 </style>
 
@@ -132,15 +139,15 @@ body {
   <table id = "menu-bar">
     <tr>
       <td><a href="#"><img alt="" src="img/my_logo.png"></a></td>
-      <td><a href="customer.php">Customer</a></td>
-      <td><a href="items.php">Items</a></td>
-      <td><a href="deliveries.php">Deliveries</a></td>
-      <td><a href="receivings.php">Receivings</a></td>
-      <td><a href="suppliers.php">Suppliers</a></td>
-      <td><a href="sales.php">Sales</a></td>
-      <td><a href="reports.php">Reports</a></td>
-      <td><a href="employees.php">Employees</a></td>
-      <td><a href="my_account.php">My account</a></td>
+      <td><a href="customer">Customer</a></td>
+      <td><a href="items">Items</a></td>
+      <td><a href="deliveries">Deliveries</a></td>
+      <td><a href="receivings">Receivings</a></td>
+      <td><a href="suppliers">Suppliers</a></td>
+      <td><a href="sales">Sales</a></td>
+      <td><a href="reports">Reports</a></td>
+      <td><a href="employees">Employees</a></td>
+      <td><a href="my_account">My account</a></td>
     </tr>
   </table>
   
@@ -151,77 +158,68 @@ body {
 
     <div id="content-area">
       <table id="menu-buttons-container">
+      <div id="caption-div" style="width:99%;padding:30px 0px 60px 0px;font-size:30px;">
+        <div style="width:50%;float:left;">List of customers</div>
+        <div class="header-form">                                                 
+          <form id="search_form" method="post" action="index.php">                
+            <span>Search:</span>&nbsp;&nbsp;                                      
+            <input type="text" size="12" name="search_string" />                  
+          </form>                                                                 
+        </div>
+      </div>
         <tr>
-          <td>
+          <td style="vertical-align:top;width:190px;">
             <table>
-              <tr><td class="link-button"><a href="customer.php">Customer</a></td></tr>
-              <tr><td class="description">Add, Update, Delete  and Search customer</td></tr>
+              <tr>
+                <td class="link-button" width="10">+</td>
+                <td><input type="button" value="New customer" 
+                    name ="add" class="buttons" 
+                    onclick="javascript:location='customer_details'"/></td>
+              </tr>
+              <tr>
+                <td class="link-button" width="10">-</td>
+                <td><input type="button" value="Delete customer" name="delete" class="buttons" /></td>
+              </tr>
             </table>
           </td>
-          <td>
-            <table>
-              <tr><td class="link-button"><a href="items.php">Items</a></td></tr>
-              <tr><td class="description">Add, Update, Delete  and Search items</td></tr>
-            </table>
-          </td>
-          <td>
-            <table>
-              <tr><td class="link-button"><a href="deliveries.php">Deliveries</a></td></tr>
-              <tr><td class="description">Add, Update, Delete  and Search deliveries</td></tr>
-            </table>
-          </td>
-        </tr>
         <!-- -->
-        <tr>
-          <td colspan="3">&nbsp;</td>
-        </tr>
-        <tr>
-          <td colspan="3">&nbsp;</td>
-        </tr>
+          <td style="vertical-align:top;">
+            <table width="99%" style="border-style:solid;border-width:1px;font-size:12px;">
+              <tr style="background-color:#6598CC;color:white;">
+                <th>&nbsp;</th>
+                <th class="cd-details">Customer name</th>
+                <th class="cd-details">E-mail</td>
+                <th class="cd-details">Phone number</th>
+                <th class="cd-details">Address</th>
+                <th class="cd-details">&nbsp;</th>
+              </tr>
+              <?php
+                $query = "SELECT * FROM customer";     
+                $results = mysql_query($query,$db);                                     
+                //$r = mysql_fetch_row($results);                                                 
+                $n = mysql_num_rows($results);
+                if ($n > 0) {
+                  for($i=0;$i < $n ; $i++) {
+                   $record = mysql_fetch_row($results);                                                 
+              ?>
+              <tr>
+                <td><input type="checkbox" name="customer" /></td>
+                <td><?php echo encrypt($record[1]); ?></td>
+                <td><?php echo encrypt($record[2]); ?></td>
+                <td><?php echo encrypt($record[3]); ?></td>
+                <td><?php echo encrypt($record[4]); ?></td>
+                <td><a href="/customer_details/<?php echo $record[0]; ?>">Edit</a></td>
+              </tr>
+              <?php 
+               }
+              }?>
+              <tr style="background-color:#6598CC;">
+                <td colspan="6">&nbsp;</td>
+              </tr>
+            </table>
+          </td>
         <!-- -->
-        <tr>
-          <td>
-            <table>
-              <tr><td class="link-button"><a href="suppliers.php">Suppliers</a></td></tr>
-              <tr><td class="description">Add, Update, Delete  and Search suppliers</td></tr>
-            </table>
-          </td>
-          <td>
-            <table>
-              <tr><td class="link-button"><a href="sales.php">Sales</a></td></tr>
-              <tr><td class="description">Process sales and returns</td></tr>
-            </table>
-          </td>
-          <td>
-            <table>
-              <tr><td class="link-button"><a href="reports.php">Reports</a></td></tr>
-              <tr><td class="description">View and generate reports</td></tr>
-            </table>
-          </td>
         </tr>
-        <!-- -->
-        <tr>
-          <td colspan="3">&nbsp;</td>
-        </tr>
-        <tr>
-          <td colspan="3">&nbsp;</td>
-        </tr>
-        <!-- -->
-        <tr>
-          <td>
-            <table>
-              <tr><td class="link-button"><a href="employees.php">Employees</a></td></tr>
-              <tr><td class="description">Add, Update, Delete  and Search employees</td></tr>
-            </table>
-          </td>
-          <td colspan="2">
-            <table>
-              <tr><td class="link-button"><a href="my_account.php">My account</a></td></tr>
-              <tr><td class="description">Update user details and change password</td></tr>
-            </table>
-          </td>
-        </tr>
-        <!-- -->
       </table>
     </div>
 
