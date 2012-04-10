@@ -129,7 +129,7 @@ xmlhttp.send();
 
   }
 
-  function selectItem(item_id) {
+  function selectItesm(item_id) {
     document.getElementById("item_list_results").innerHTML = null;
     itemPriceTD = document.getElementsByClassName('blank_price');
     itemNameTD = document.getElementsByClassName('blank_item');
@@ -299,6 +299,117 @@ xmlhttp.send();
     return;
 
   }                                                   
+
+
+
+
+  function selectItem(item_id) {
+    document.getElementById("item_list_results").innerHTML = null;
+    itemPriceTD = document.getElementsByClassName('blank_price');
+    itemNameTD = document.getElementsByClassName('blank_item');
+    itemQuantityTD = document.getElementsByClassName('blank_quantity');
+    itemTotalTD = document.getElementsByClassName('blank_total');
+    quantityValues = document.getElementsByClassName('quantity_values');
+
+    /* starts */
+
+    var addNewRow = false;
+
+    for(var i = 0; i < itemNameTD.length; i++){
+      if(itemNameTD[i].innerHTML != "&nbsp;"){
+        addNewRow = true;
+        break;
+      }
+    }
+
+   
+
+    if(addNewRow){
+      document.getElementById("header-th").style.display = "none";
+
+      newTable =  "<td colspan='6'><table id='sales_details_table' width='106%' style='font-size:12px;'>";
+      newTable +="<tr style='background-color:#6598CC;color:white;'>";
+      newTable +="<th class='cd-details' style='text-align:left;padding-left:5px;width:140px;'>Customer name</th>";
+      newTable +="<th class='cd-details' style='width:100px;'>E-mail</td>"
+      newTable +="<th class='cd-details' style='width:80px;'>Item</th>";           
+      newTable +="<th class='cd-details' style='width:20px;'>Price</th>";           
+      newTable +="<th class='cd-details' style='width:10px;'>Quantity</th>";        
+      newTable +="<th class='cd-details' style='width:20px;'>Total</th>";           
+      newTable +="</tr>";
+
+    
+
+
+
+      for(var i = 0; i < itemNameTD.length; i++){
+        newTable += "<tr><td class='cname' style='text-align:left;padding-left:5px;width:140px;font-size:12px;'>" + selected_customer_name + "</td>";
+        newTable += "<td style='text-align:center;width:100px;font-size:12px;'>" + selected_customer_email + "</td>";
+        newTable += "<td style='text-align:center;width:80px;font-size:12px;' class='blank_item'>" + itemNameTD[i].innerHTML + "</td>";
+        for(var x = 0; x < itemPriceTD.length; x++){
+          newTable += "<td style='text-align:center;width:20px;font-size:12px;' class='blank_price'>" + itemPriceTD[i].innerHTML + "</td>";
+          break;
+        }
+
+        for(var x = 0; x < itemQuantityTD.length; x++){
+          name = quantityValues[i].name;
+          id = quantityValues[i].id;
+          value = quantityValues[i].value;
+          selected_item_id = quantityValues[i].id.split("quantity")[0];
+          sQty = "<input type='text' class='quantity_values' name='" + name + "' id='" + id + "' size=2 onkeyup='calcualateQ(" + selected_item_id + ");' value='" + value +"' />";
+          newTable += "<td style='text-align:center;width:10px;font-size:12px;' class='blank_quantity'>" + sQty + "</td>";
+          break;
+        }
+
+        for(var x = 0; x < itemTotalTD.length; x++){
+          newTable += "<td style='text-align:center;width:20px;font-size:12px;' class='blank_total'>" + itemTotalTD[i].innerHTML + "</td></tr>";
+          break;
+        }
+      }
+
+      var newRow = document.getElementById("sales_details");
+      newTable += "<tr><td class='cname' style='text-align:left;padding-left:5px;width:140px;font-size:12px;'>" + selected_customer_name + "</td>";
+      newTable += "<td style='text-align:center;width:100px;font-size:12px;'>" + selected_customer_email + "</td>";
+      newTable += "<td style='text-align:center;width:80px;font-size:12px;' class='blank_item'>&nbsp;</td>";
+      newTable += "<td style='text-align:center;width:20px;font-size:12px;' class='blank_price'>&nbsp;</td>";
+      newTable += "<td style='text-align:center;width:10px;font-size:12px;' class='blank_quantity'>&nbsp;</td>";
+      newTable += "<td style='text-align:center;width:20px;font-size:12px;' class='blank_total'>&nbsp;</td></tr></table></td>";
+      newRow.innerHTML = newTable;
+      itemPriceTD = document.getElementsByClassName('blank_price');
+      itemNameTD = document.getElementsByClassName('blank_item');
+      itemQuantityTD = document.getElementsByClassName('blank_quantity');
+    }
+
+
+
+    /* ends */
+
+    for(var i = 0; i < itemNameTD.length; i++){
+      if(itemNameTD[i].innerHTML == "&nbsp;"){
+        itemNameTD[i].innerHTML = item_name[item_id];
+      }
+    }
+
+    for(var i = 0; i < itemPriceTD.length; i++){
+      if(itemPriceTD[i].innerHTML == "&nbsp;"){
+        itemPriceTD[i].innerHTML = item_price[item_id];
+      }
+    }
+    
+
+    for(var i = 0; i < itemQuantityTD.length; i++){
+      if(itemQuantityTD[i].innerHTML == "&nbsp;"){
+        itemQuantityTD[i].innerHTML = "<input type='text' class='quantity_values' name='quantity"+ item_id + "' id='quantity" + item_id + "' size=2 onkeyup='calcualateQ(" + item_id + ");' value='' />";
+      }
+    }
+
+    for(var i = 0; i < itemTotalTD.length; i++){
+      if(itemTotalTD[i].innerHTML == "&nbsp;"){
+        itemTotalTD[i].innerHTML = "<label class='item_total' id='label_" + item_id + "'></label>";
+      }
+    }
+  }
+
+
 </script>
 
 
@@ -472,7 +583,7 @@ body {
               <tr id="search_item">
                 <td colspan="6" style="text-align:left;padding-left:10px;">&nbsp;</td>
               </tr>
-              <tr style="background-color:#6598CC;color:white;">
+              <tr style="background-color:#6598CC;color:white;" id="header-th">
                 <th class="cd-details" style="text-align:left;padding-left:5px;width:140px;">Customer name</th>
                 <th class="cd-details" style="width:100px;">E-mail</td>
                 <th class="cd-details" style="width:80px;">Item</th>
