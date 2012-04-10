@@ -1,5 +1,5 @@
-<?php session_start();       
-require 'encryption.php'; ?>
+<?php session_start();                                                          
+require 'encryption.php'; ?>                                                    
 <script>                                                                        
   function redirectLogin() {                                                    
     document.location = "login.php";                                            
@@ -8,19 +8,17 @@ require 'encryption.php'; ?>
   function redirectHome() {                                                     
     document.location = "index.php";                                            
   }                                                                             
-</script>
-<?php
-         
+</script>                                                                       
+<?php                                                                           
+                                                                                
 if($_SESSION['user_id'] == null) { ?>                                           
   <script>redirectLogin();</script><?php                                        
 }else{                                                                          
   $user_id = $_SESSION['user_id'];                                              
-} 
-                                                
+}                                                                               
+                                                                                
 $db = mysql_pconnect("localhost","root","letusout");                            
-mysql_select_db("supply_concepts", $db); 
-
-
+mysql_select_db("supply_concepts", $db);                                        
 
 $user_role = "SELECT role FROM user_role WHERE user_id = $user_id LIMIT 1";     
 $results = mysql_query($user_role,$db);                                         
@@ -43,21 +41,17 @@ if ($n > 0) {
     exit;                                                                       
 }
 
-
-
-
-
-
-if(strlen($_SESSION['username']) > 0) {
-  $username = $_SESSION['username'];
-  $user_id = $_SESSION['user_id'];
-
-  $query = "SELECT * FROM users WHERE username = '$username'                
-            AND user_id = $user_id ORDER BY user_id DESC LIMIT 1";                               
-  $results = mysql_query($query,$db);                                             
-  $r = mysql_fetch_row($results);
-}
-
+                                                                                
+if(strlen($_SESSION['username']) > 0) {                                         
+  $username = $_SESSION['username'];                                            
+  $user_id = $_SESSION['user_id'];                                              
+                                                                                
+  $query = "SELECT * FROM users WHERE username = '$username'                    
+            AND user_id = $user_id ORDER BY user_id DESC LIMIT 1";              
+  $results = mysql_query($query,$db);                                           
+  $rc = mysql_fetch_row($results);                                               
+}                                                                               
+                                                                                
 ?>
 <html>
 <head>
@@ -170,9 +164,9 @@ body {
       <td><a href="index"><img alt="" src="img/my_logo.png"></a></td>
       <td><a href="customer">Customer</a></td>
       <td><a href="items">Items</a></td>
-      <td><a href="deliveries">Deliveries</a></td>
-      <td><a href="receivings">Receivings</a></td>
-      <td><a href="suppliers">Suppliers</a></td>
+      <td><a href="#">Deliveries</a></td>
+      <td><a href="#">Receivings</a></td>
+      <td><a href="#">Suppliers</a></td>
       <td><a href="sales">Sales</a></td>
       <td><a href="report">Reports</a></td>
       <td><a href="employees">Employees</a></td>
@@ -182,76 +176,93 @@ body {
   
   </div>
 
-
   <div id = "main-content">
 
     <div id="content-area">
       <table id="menu-buttons-container">
       <div id="caption-div" style="width:99%;padding:30px 0px 60px 0px;font-size:30px;">
-        <div style="width:50%;float:left;">List of employees</div>
-        <div class="header-form">                                                 
+        <div style="width:50%;float:left;">User roles</div>
+        <!--div class="header-form">                                                 
           <form id="search_form" method="post" action="index.php">                
             <span>Search:</span>&nbsp;&nbsp;                                      
             <input type="text" size="12" name="search_string" />                  
           </form>                                                                 
-        </div>
+        </div -->
       </div>
         <tr>
-          <td style="vertical-align:top;width:190px;">
+          <!--td style="vertical-align:top;width:190px;">
             <table>
               <tr>
                 <td class="link-button" width="10">+</td>
-                <td><input type="button" value="New employee" 
+                <td><input type="button" value="New customer" 
                     name ="add" class="buttons" 
-                    onclick="javascript:alert('Not done')"/></td>
+                    onclick="javascript:location='customer_details'"/></td>
               </tr>
               <tr>
                 <td class="link-button" width="10">-</td>
-                <td><input type="button" value="Delete employee" name="delete" class="buttons" /></td>
+                <td><input type="button" value="Delete customer" name="delete" class="buttons" /></td>
               </tr>
             </table>
-          </td>
+          </td -->
         <!-- -->
           <td style="vertical-align:top;">
-            <table width="99%" style="border-style:solid;border-width:1px;font-size:12px;">
-              <tr style="background-color:#6598CC;color:white;">
-                <th>&nbsp;</th>
-                <th class="cd-details" style="text-align:left;padding-left:5px;">Username</th>
-                <th class="cd-details" style="text-align:left;padding-left:5px;">Name</th>
-                <th class="cd-details">Sex</td>
-                <th class="cd-details">DOB</td>
-                <th class="cd-details" style="text-align:left;padding-left:5px;">E-mail</td>
-                <th class="cd-details">User role</td>
-                <th class="cd-details">Date enrolled</td>
-                <th class="cd-details">&nbsp;</th>
-              </tr>
-              <?php
-                $query = "SELECT * FROM users INNER JOIN user_role USING(user_id)";     
-                $results = mysql_query($query,$db);                                     
-                //$r = mysql_fetch_row($results);                                                 
-                $n = mysql_num_rows($results);
-                if ($n > 0) {
-                  for($i=0;$i < $n ; $i++) {
-                   $record = mysql_fetch_row($results);                                                 
-              ?>
-              <tr>
-                <td><input type="checkbox" name="customer" /></td>
-                <td><?php echo encrypt($record[1]); ?></td>
-                <td><?php echo encrypt($record[2])." ".encrypt($record[3]); ?></td>
-                <td style="text-align:center;"><?php echo $record[4]; ?></td>
-                <td style="text-align:center;"><?php echo $record[5]; ?></td>
-                <td><?php echo encrypt($record[6]); ?></td>
-                <td style="text-align:center;"><?php echo encrypt($record[8]); ?></td>
-                <td style="text-align:center;"><?php echo $record[9]; ?></td>
-                <td style="text-align:center;"><a href="#">Edit</a></td>
-              </tr>
-              <?php 
-               }
-              }?>
-              <tr style="background-color:#6598CC;">
-                <td colspan="9">&nbsp;</td>
-              </tr>
-            </table>
+          <!-- starts -->
+            <form method="post" action="assign_role.php">
+
+    <table style="width:345px;">
+      <tr>
+        <td>User role</td>
+        <td>
+          <select id="role" name="select_user_role">
+            <option></option>                                                           
+            <option value="sales">Sales</option>                                
+            <option value="admin">Admin</option>                                
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>User</td>
+        <td>
+          <select id="user_name" name="user_id">
+
+           <?php                                                               
+              $query = "SELECT user_id,username FROM users;";            
+              $results = mysql_query($query,$db);                           
+              $n = mysql_num_rows($results);                                    
+
+              if($n > 0) { ?>                                                   
+                <option value=""></option>                                      
+              <?php for($i = 0; $i < $n; $i++) {                                
+                $r = mysql_fetch_row($results);                                 
+             ?>                                                                 
+                <option value="<?php echo $r[0]; ?>"><?php echo encrypt($r[1]); ?></option>
+              <?php                                                             
+                }                                                               
+              }                                                                 
+             ?>
+
+          </select>
+
+        </td>
+
+      </tr>
+
+      <tr>                                                                  
+
+        <td>&nbsp;</td>                                                     
+
+        <td style="text-align:left;">                                       
+
+          <input type="button" onclick="javascript:document:location='index';" value="Cancel" />
+
+          <input type="submit" value="Save" />                              
+
+        </td>                                                               
+
+      </tr>
+
+    </table></form>
+          <!-- ends -->
           </td>
         <!-- -->
         </tr>
@@ -259,7 +270,7 @@ body {
     </div>
 
     <div id ="user-details">Welcome&nbsp;
-      <span style="color:OrangeRed;"><?php echo encrypt($r[2]).' '.encrypt($r[3]); ?></span>
+      <span style="color:OrangeRed;"><?php echo encrypt($rc[2]).' '.encrypt($rc[3]); ?></span>
       &nbsp;|&nbsp;<a href="signout">Logout</a>
       <span style="color:black;float:right;" id ="time"></span>
     </div>
