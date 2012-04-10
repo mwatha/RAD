@@ -27,7 +27,7 @@ if(strlen($_SESSION['username']) > 0) {
   $query = "SELECT * FROM users WHERE username = '$username'                    
             AND user_id = $user_id ORDER BY user_id DESC LIMIT 1";              
   $results = mysql_query($query,$db);                                           
-  $r = mysql_fetch_row($results);                                               
+  $rc = mysql_fetch_row($results);                                               
 }                                                                               
                                                                                 
 ?>
@@ -146,7 +146,7 @@ body {
       <td><a href="#">Receivings</a></td>
       <td><a href="#">Suppliers</a></td>
       <td><a href="sales">Sales</a></td>
-      <td><a href="reports">Reports</a></td>
+      <td><a href="report">Reports</a></td>
       <td><a href="employees">Employees</a></td>
       <td><a href="my_account">Admin</a></td>
     </tr>
@@ -188,137 +188,75 @@ body {
             <form method="post" action="queryreport.php">
 
     <table style="width:345px;">
-
       <tr>
-
         <td>Start date</td>
-
         <td>
-
           <input name="startdate" size=5 />
-
         </td>
-
       </tr>
-
       <tr>
-
         <td>End date</td>
-
         <td>
-
           <input name="enddate" size=5 />
-
         </td>
-
       </tr>
-
       <tr>
-
         <td>Teller location</td>
-
         <td>
-
           <select id="location" name="location_name">
-
             <option></option>                                                           
-
             <option value="Teller 1">Teller One</option>                                
-
             <option value="Teller 2">Teller Two</option>                                
-
             <option value="Teller 3">Teller Three</option>                              
-
             <option value="Teller 4">Teller Four</option>                               
-
             <option value="Teller 5">Teller Five</option>                               
-
           </select>
-
         </td>
-
       </tr>
-
       <tr>
-
         <td>Customer</td>
-
         <td>
-
           <select id="customer_name" name="customer_name">
 
            <?php                                                               
-
               $query = "SELECT customer_name FROM customer;";            
-
               $results = mysql_query($query,$db);                           
-
               $n = mysql_num_rows($results);                                    
 
                                                                                 
 
               if($n > 0) { ?>                                                   
-
                 <option value=""></option>                                      
-
               <?php for($i = 0; $i < $n; $i++) {                                
-
                 $r = mysql_fetch_row($results);                                 
-
              ?>                                                                 
-
                 <option value="<?php echo $r[0]; ?>"><?php echo encrypt($r[0]); ?></option>
-
               <?php                                                             
-
                 }                                                               
-
               }                                                                 
-
              ?>
-
           </select>
-
         </td>
-
       </tr>
-
       <tr>
-
         <td>User</td>
-
         <td>
-
           <select id="user_name" name="username">
 
            <?php                                                               
-
               $query = "SELECT username FROM users;";            
-
               $results = mysql_query($query,$db);                           
-
               $n = mysql_num_rows($results);                                    
 
-                                                                                
-
               if($n > 0) { ?>                                                   
-
                 <option value=""></option>                                      
-
               <?php for($i = 0; $i < $n; $i++) {                                
-
                 $r = mysql_fetch_row($results);                                 
-
              ?>                                                                 
-
                 <option value="<?php echo $r[0]; ?>"><?php echo encrypt($r[0]); ?></option>
-
               <?php                                                             
-
                 }                                                               
-
               }                                                                 
-
              ?>
 
           </select>
@@ -350,7 +288,7 @@ body {
     </div>
 
     <div id ="user-details">Welcome&nbsp;
-      <span style="color:OrangeRed;"><?php echo encrypt($r[2]).' '.encrypt($r[3]); ?></span>
+      <span style="color:OrangeRed;"><?php echo encrypt($rc[2]).' '.encrypt($rc[3]); ?></span>
       &nbsp;|&nbsp;<a href="signout">Logout</a>
       <span style="color:black;float:right;" id ="time"></span>
     </div>
