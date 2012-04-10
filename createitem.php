@@ -5,7 +5,7 @@ require 'encryption.php';
 <script>
 
   function successfullCreated() {
-    location.href = "sales";
+    location.href = "items";
   }
   
   function redirect() {
