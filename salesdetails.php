@@ -1,5 +1,5 @@
-<?php session_start();       
-require 'encryption.php'; ?>
+<?php session_start();                                                          
+require 'encryption.php'; ?>                                                    
 <script>                                                                        
   function redirectLogin() {                                                    
     document.location = "login.php";                                            
@@ -8,28 +8,28 @@ require 'encryption.php'; ?>
   function redirectHome() {                                                     
     document.location = "index.php";                                            
   }                                                                             
-</script>
-<?php
-         
+</script>                                                                       
+<?php                                                                           
+                                                                                
 if($_SESSION['user_id'] == null) { ?>                                           
   <script>redirectLogin();</script><?php                                        
 }else{                                                                          
   $user_id = $_SESSION['user_id'];                                              
-} 
-                                                
+}                                                                               
+                                                                                
 $db = mysql_pconnect("localhost","root","letusout");                            
-mysql_select_db("supply_concepts", $db); 
-
-if(strlen($_SESSION['username']) > 0) {
-  $username = $_SESSION['username'];
-  $user_id = $_SESSION['user_id'];
-
-  $query = "SELECT * FROM users WHERE username = '$username'                
-            AND user_id = $user_id ORDER BY user_id DESC LIMIT 1";                               
-  $results = mysql_query($query,$db);                                             
-  $r = mysql_fetch_row($results);
-}
-
+mysql_select_db("supply_concepts", $db);                                        
+                                                                                
+if(strlen($_SESSION['username']) > 0) {                                         
+  $username = $_SESSION['username'];                                            
+  $user_id = $_SESSION['user_id'];                                              
+                                                                                
+  $query = "SELECT * FROM users WHERE username = '$username'                    
+            AND user_id = $user_id ORDER BY user_id DESC LIMIT 1";              
+  $results = mysql_query($query,$db);                                           
+  $r = mysql_fetch_row($results);                                               
+}                                                                               
+                                                                                
 ?>
 <html>
 <head>
@@ -142,9 +142,9 @@ body {
       <td><a href="index"><img alt="" src="img/my_logo.png"></a></td>
       <td><a href="customer">Customer</a></td>
       <td><a href="items">Items</a></td>
-      <td><a href="deliveries">Deliveries</a></td>
-      <td><a href="receivings">Receivings</a></td>
-      <td><a href="suppliers">Suppliers</a></td>
+      <td><a href="#">Deliveries</a></td>
+      <td><a href="#">Receivings</a></td>
+      <td><a href="#">Suppliers</a></td>
       <td><a href="sales">Sales</a></td>
       <td><a href="reports">Reports</a></td>
       <td><a href="employees">Employees</a></td>
@@ -154,22 +154,35 @@ body {
   
   </div>
 
+  <?php                                                                           
+  $encounter_id =  $_GET['encounter_id'];                                         
+  $options = "SELECT e.encounter_id,customer_name  FROM encounter e               
+              INNER JOIN customer c ON c.customer_id = e.customer_id              
+              AND e.encounter_id = $encounter_id LIMIT 1";                        
+                                                                                  
+  $results = mysql_query($options,$db);                                           
+  $n = mysql_num_rows($results);                                                  
+                                                                                  
+  if($n > 0) {                                                                    
+   $rc = mysql_fetch_row($results);                                               
+  } ?>                                                                               
 
   <div id = "main-content">
 
     <div id="content-area">
       <table id="menu-buttons-container">
       <div id="caption-div" style="width:99%;padding:30px 0px 60px 0px;font-size:30px;">
-        <div style="width:50%;float:left;">List of customers</div>
-        <div class="header-form">                                                 
+        <div style="width:50%;float:left;">Order #<?php echo $rc[0]; ?> created<br />
+        <span style="font-size:13px;">Customer:&nbsp;<?php echo encrypt($rc[1]); ?></span></div>
+        <!--div class="header-form">                                                 
           <form id="search_form" method="post" action="index.php">                
             <span>Search:</span>&nbsp;&nbsp;                                      
             <input type="text" size="12" name="search_string" />                  
           </form>                                                                 
-        </div>
+        </div -->
       </div>
         <tr>
-          <td style="vertical-align:top;width:190px;">
+          <!--td style="vertical-align:top;width:190px;">
             <table>
               <tr>
                 <td class="link-button" width="10">+</td>
@@ -182,38 +195,37 @@ body {
                 <td><input type="button" value="Delete customer" name="delete" class="buttons" /></td>
               </tr>
             </table>
-          </td>
+          </td -->
         <!-- -->
           <td style="vertical-align:top;">
             <table width="99%" style="border-style:solid;border-width:1px;font-size:12px;">
               <tr style="background-color:#6598CC;color:white;">
-                <th>&nbsp;</th>
-                <th class="cd-details">Customer name</th>
-                <th class="cd-details">E-mail</td>
-                <th class="cd-details">Phone number</th>
-                <th class="cd-details">Address</th>
-                <th class="cd-details">&nbsp;</th>
+                <th class="cd-details" style="text-align:left;padding-left:5px;width:140px;">Product name</th>
+                <th class="cd-details" style="width:100px;text-align:right;padding-right:5px;">Unit price</td>
+                <th class="cd-details" style="width:80px;text-align:right;padding-right:5px;">Quantity</th>
+                <th class="cd-details" style="width:20px;text-align:right;padding-right:5px;">Total</th>
               </tr>
               <?php
-                $query = "SELECT * FROM customer";     
-                $results = mysql_query($query,$db);                                     
-                //$r = mysql_fetch_row($results);                                                 
-                $n = mysql_num_rows($results);
-                if ($n > 0) {
-                  for($i=0;$i < $n ; $i++) {
-                   $record = mysql_fetch_row($results);                                                 
-              ?>
-              <tr>
-                <td><input type="checkbox" name="customer" /></td>
-                <td><?php echo encrypt($record[1]); ?></td>
-                <td><?php echo encrypt($record[2]); ?></td>
-                <td><?php echo encrypt($record[3]); ?></td>
-                <td><?php echo encrypt($record[4]); ?></td>
-                <td><a href="#">Edit</a></td>
-              </tr>
-              <?php 
-               }
-              }?>
+              $options = "SELECT i.name,o.quantity,o.price  FROM encounter e            
+                          INNER JOIN orders o ON e.encounter_id = o.encounter_id        
+                          AND e.encounter_id = $encounter_id                            
+                          INNER JOIN customer c ON c.customer_id = e.customer_id        
+                          INNER JOIN item i ON i.item_id = o.item_id";                  
+              $results = mysql_query($options,$db);                                     
+              $nl = mysql_num_rows($results);                                           
+                                                                                        
+              if($nl > 0) {                                                             
+                for ($i = 1;$i <= $nl;$i++) {                                           
+                 $rc = mysql_fetch_row($results);                                       
+              ?>                                                                        
+               <td><?php echo encrypt($rc[0]); ?></td>
+               <td style="text-align:right;padding-right:5px;"><?php echo $rc[2]; ?></td>
+               <td style="text-align:right;padding-right:5px;"><?php echo $rc[1]; ?></td>
+               <td style="text-align:right;padding-right:5px;"><?php echo ($rc[2] * $rc[1]); ?></td>
+              <?php                                                                     
+               }                                                                        
+             } ?>
+
               <tr style="background-color:#6598CC;">
                 <td colspan="6">&nbsp;</td>
               </tr>

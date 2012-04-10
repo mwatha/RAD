@@ -17,18 +17,38 @@ $orders = explode(",", $str);
 for($i=0;$i<count($orders);$i++){
   $order = explode(";", $orders[$i]); 
   $customer = encrypt($order[3]);
-  $item = encrypt($order[0]);
-  $quantity = $order[1];
-  $price = $order[2];
+}
 
-  $query = "SELECT customer_id FROM customer WHERE customer_name = '$customer' LIMIT 1";                   
+$creator = $_SESSION['user_id'];
+
+$query = "SELECT customer_id FROM customer WHERE customer_name = '$customer' LIMIT 1";                   
+$results = mysql_query($query,$db);                                         
+$n = mysql_num_rows($results);
+
+if($n > 0){
+  $r = mysql_fetch_row($results);
+  $customer_id = $r[0];
+  $location = encrypt($_SESSION['location']);
+  
+  $query = "INSERT INTO encounter VALUES(NULL,$creator,$customer_id,'$location','$datetime')";
+  mysql_query($query,$db);
+
+  $query = "SELECT encounter_id FROM encounter WHERE user_id = $creator 
+  AND customer_id = $customer_id AND date_created = '$datetime' LIMIT 1";                   
   $results = mysql_query($query,$db);                                         
   $n = mysql_num_rows($results);
 
   if($n > 0){
     $r = mysql_fetch_row($results);
-    $customer_id = $r[0];
-  }
+    $encounter_id = $r[0];
+  }  
+}
+
+for($i=0;$i<count($orders);$i++){
+  $order = explode(";", $orders[$i]); 
+  $item = encrypt($order[0]);
+  $quantity = $order[1];
+  $price = $order[2];
 
   $query = "SELECT item_id FROM item WHERE name = '$item' LIMIT 1";                   
   $results = mysql_query($query,$db);                                         
@@ -39,12 +59,11 @@ for($i=0;$i<count($orders);$i++){
     $item_id = $r[0];
   }
 
-  $creator = $_SESSION['user_id'];
-  $query = "INSERT INTO orders VALUES(NULL,$item_id,$quantity,$price,$creator,'$datetime')";
+  $query = "INSERT INTO orders VALUES(NULL,$encounter_id,$item_id,$quantity,$price,$creator,'$datetime')";
   mysql_query($query,$db);
-}
+} 
 ?>
 
 <script>
-  document.location = "sales.php";
+  document.location = "salesdetails?encounter_id=<?php echo $encounter_id ?>";
 </script>

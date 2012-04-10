@@ -2,8 +2,9 @@
 
 $_SESSION['username'] = null;
 $_SESSION['user_id'] = null;  
+$_SESSION['location'] = null;
 ?>
 
 <script>
-  window.location="login.php";
+  window.location="login";
 </script>

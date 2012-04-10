@@ -146,7 +146,7 @@ body {
       <td><a href="receivings">Receivings</a></td>
       <td><a href="suppliers">Suppliers</a></td>
       <td><a href="sales">Sales</a></td>
-      <td><a href="reports">Reports</a></td>
+      <td><a href="report">Reports</a></td>
       <td><a href="employees">Employees</a></td>
       <td><a href="my_account">Admin</a></td>
     </tr>
@@ -160,7 +160,7 @@ body {
     <div id="content-area">
       <table id="menu-buttons-container">
       <div id="caption-div" style="width:99%;padding:30px 0px 60px 0px;font-size:30px;">
-        <div style="width:50%;float:left;">List of customers</div>
+        <div style="width:50%;float:left;">List of employees</div>
         <div class="header-form">                                                 
           <form id="search_form" method="post" action="index.php">                
             <span>Search:</span>&nbsp;&nbsp;                                      
@@ -173,13 +173,13 @@ body {
             <table>
               <tr>
                 <td class="link-button" width="10">+</td>
-                <td><input type="button" value="New customer" 
+                <td><input type="button" value="New employee" 
                     name ="add" class="buttons" 
-                    onclick="javascript:location='customer_details'"/></td>
+                    onclick="javascript:alert('Not done')"/></td>
               </tr>
               <tr>
                 <td class="link-button" width="10">-</td>
-                <td><input type="button" value="Delete customer" name="delete" class="buttons" /></td>
+                <td><input type="button" value="Delete employee" name="delete" class="buttons" /></td>
               </tr>
             </table>
           </td>
@@ -188,14 +188,17 @@ body {
             <table width="99%" style="border-style:solid;border-width:1px;font-size:12px;">
               <tr style="background-color:#6598CC;color:white;">
                 <th>&nbsp;</th>
-                <th class="cd-details">Customer name</th>
-                <th class="cd-details">E-mail</td>
-                <th class="cd-details">Phone number</th>
-                <th class="cd-details">Address</th>
+                <th class="cd-details" style="text-align:left;padding-left:5px;">Username</th>
+                <th class="cd-details" style="text-align:left;padding-left:5px;">Name</th>
+                <th class="cd-details">Sex</td>
+                <th class="cd-details">DOB</td>
+                <th class="cd-details" style="text-align:left;padding-left:5px;">E-mail</td>
+                <th class="cd-details">User role</td>
+                <th class="cd-details">Date enrolled</td>
                 <th class="cd-details">&nbsp;</th>
               </tr>
               <?php
-                $query = "SELECT * FROM customer";     
+                $query = "SELECT * FROM users INNER JOIN user_role USING(user_id)";     
                 $results = mysql_query($query,$db);                                     
                 //$r = mysql_fetch_row($results);                                                 
                 $n = mysql_num_rows($results);
@@ -206,16 +209,19 @@ body {
               <tr>
                 <td><input type="checkbox" name="customer" /></td>
                 <td><?php echo encrypt($record[1]); ?></td>
-                <td><?php echo encrypt($record[2]); ?></td>
-                <td><?php echo encrypt($record[3]); ?></td>
-                <td><?php echo encrypt($record[4]); ?></td>
-                <td><a href="#">Edit</a></td>
+                <td><?php echo encrypt($record[2])." ".encrypt($record[3]); ?></td>
+                <td style="text-align:center;"><?php echo $record[4]; ?></td>
+                <td style="text-align:center;"><?php echo $record[5]; ?></td>
+                <td><?php echo encrypt($record[6]); ?></td>
+                <td style="text-align:center;"><?php echo encrypt($record[8]); ?></td>
+                <td style="text-align:center;"><?php echo $record[9]; ?></td>
+                <td style="text-align:center;"><a href="#">Edit</a></td>
               </tr>
               <?php 
                }
               }?>
               <tr style="background-color:#6598CC;">
-                <td colspan="6">&nbsp;</td>
+                <td colspan="9">&nbsp;</td>
               </tr>
             </table>
           </td>

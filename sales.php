@@ -445,13 +445,13 @@ body {
       <td><a href="#"><img alt="" src="img/my_logo.png"></a></td>
       <td><a href="customer">Customer</a></td>
       <td><a href="items">Items</a></td>
-      <td><a href="deliveries">Deliveries</a></td>
-      <td><a href="receivings">Receivings</a></td>
-      <td><a href="suppliers">Suppliers</a></td>
+      <td><a href="#">Deliveries</a></td>
+      <td><a href="#">Receivings</a></td>
+      <td><a href="#">Suppliers</a></td>
       <td><a href="sales">Sales</a></td>
-      <td><a href="reports">Reports</a></td>
+      <td><a href="report">Reports</a></td>
       <td><a href="employees">Employees</a></td>
-      <td><a href="my_account">My account</a></td>
+      <td><a href="my_account">Admin</a></td>
     </tr>
   </table>
   

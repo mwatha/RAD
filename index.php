@@ -1,13 +1,18 @@
 <?php session_start();       
 require 'encryption.php'; ?>
-<script>                                                                        
+<script>  
+  function redirectLocation() {                                                    
+    document.location = "location";                                             
+  } 
+                                                                      
   function redirectLogin() {                                                    
     document.location = "login.php";                                            
   }                                                                             
                                                                                 
   function redirectHome() {                                                     
     document.location = "index.php";                                            
-  }                                                                             
+  }     
+
 </script>
 <?php
          
@@ -16,6 +21,31 @@ if($_SESSION['user_id'] == null) { ?>
 }else{                                                                          
   $user_id = $_SESSION['user_id'];                                              
 } 
+
+
+
+
+$location = $_GET["location"];                                                  
+if(strlen($location) < 1) {                                                     
+  $location = $_SESSION['location'];                                            
+}                                                                               
+                                                                                
+if($_SESSION['user_id'] == null) { ?>                                           
+  <script>redirectLogin();</script><?php                                        
+}else{                                                                          
+  if(strlen($location) < 1) { ?>                                                
+  <script>redirectLocation();</script><?php                                     
+  }                                                                             
+  $user_id = $_SESSION['user_id'];                                              
+  $_SESSION['location'] = $location;                                            
+}
+
+
+
+
+
+
+
                                                 
 $db = mysql_pconnect("localhost","root","letusout");                            
 mysql_select_db("supply_concepts", $db); 
@@ -132,16 +162,16 @@ body {
 
   <table id = "menu-bar">
     <tr>
-      <td><a href="#"><img alt="" src="img/my_logo.png"></a></td>
+      <td><a href="index"><img alt="" src="img/my_logo.png"></a></td>
       <td><a href="customer.php">Customer</a></td>
       <td><a href="items.php">Items</a></td>
-      <td><a href="deliveries.php">Deliveries</a></td>
-      <td><a href="receivings.php">Receivings</a></td>
-      <td><a href="suppliers.php">Suppliers</a></td>
+      <td><a href="#">Deliveries</a></td>
+      <td><a href="#">Receivings</a></td>
+      <td><a href="#">Suppliers</a></td>
       <td><a href="sales.php">Sales</a></td>
-      <td><a href="reports.php">Reports</a></td>
+      <td><a href="report.php">Reports</a></td>
       <td><a href="employees.php">Employees</a></td>
-      <td><a href="my_account.php">My account</a></td>
+      <td><a href="my_account.php">Admin</a></td>
     </tr>
   </table>
   
@@ -217,7 +247,7 @@ body {
           </td>
           <td colspan="2">
             <table>
-              <tr><td class="link-button"><a href="my_account.php">My account</a></td></tr>
+              <tr><td class="link-button"><a href="my_account.php">Admin</a></td></tr>
               <tr><td class="description">Update user details and change password</td></tr>
             </table>
           </td>
