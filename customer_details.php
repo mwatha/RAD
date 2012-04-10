@@ -1,5 +1,39 @@
+<?php session_start();                                                          
+require 'encryption.php'; ?>                                                    
+<script>                                                                        
+  function redirectLogin() {                                                    
+    document.location = "login.php";                                            
+  }                                                                             
+                                                                                
+  function redirectHome() {                                                     
+    document.location = "index.php";                                            
+  }                                                                             
+</script>                                                                       
+<?php                                                                           
+                                                                                
+if($_SESSION['user_id'] == null) { ?>                                           
+  <script>redirectLogin();</script><?php                                        
+}else{                                                                          
+  $user_id = $_SESSION['user_id'];                                              
+}                                                                               
+                                                                                
+$db = mysql_pconnect("localhost","root","letusout");                            
+mysql_select_db("supply_concepts", $db);                                        
+                                                                                
+if(strlen($_SESSION['username']) > 0) {                                         
+  $username = $_SESSION['username'];                                            
+  $user_id = $_SESSION['user_id'];                                              
+                                                                                
+  $query = "SELECT * FROM users WHERE username = '$username'                    
+            AND user_id = $user_id ORDER BY user_id DESC LIMIT 1";              
+  $results = mysql_query($query,$db);                                           
+  $rc = mysql_fetch_row($results);                                              
+}                                                                               
+                                                                                
+?>
 <html>
 <head>
+<script type="text/javascript" src="javascript/dateformat.js"></script>
 
 <style type="text/css">
 html {
@@ -145,11 +179,35 @@ body {
       <!-- end -->
     </div>
 
-    <div id ="user-details">Welcome&nbsp;user:&nbsp;<span>please login to continue<span></div>
-
-  </div>
-
-</body>
-
-
-</html>
+    <div id ="user-details">Welcome&nbsp;                                       
+      <span style="color:OrangeRed;"><?php echo encrypt($rc[2]).' '.encrypt($rc[3]); ?></span>
+      &nbsp;|&nbsp;<a href="signout">Logout</a>                                 
+      <span style="color:black;float:right;" id ="time"></span>                 
+    </div>                                                                      
+                                                                                
+  </div>                                                                        
+                                                                                
+</body>                                                                         
+                                                                                
+<script>                                                                        
+                                                                                
+   function displayDateTime() {                                                  
+    var displayTime = document.getElementById("time");                          
+    var time =  (new Date()).getHours() + ":" + (new Date()).getMinutes();      
+    var hr = time.split(":")[0];                                                
+    var min = time.split(":")[1];                                               
+                                                                                
+    if(hr.length < 2)                                                           
+      hr = "0" + hr;                                                            
+                                                                                
+    if(min.length < 2)                                                          
+      min = "0" + min;                                                          
+                                                                                
+    displayTime.innerHTML = hr + ":" + min                                      
+    + "&nbsp;|&nbsp;" + dateFormat(new Date(),"dddd, mmmm dS, yyyy");           
+  }                                                                             
+                                                                                
+  displayDateTime();                                                            
+  setInterval("displayDateTime();",1000);                                       
+</script>                                                                       
+</html>                                   

@@ -236,12 +236,22 @@ body {
 
 <script>
   
-  function displayDateTime() {
-    var displayTime = document.getElementById("time");
-    displayTime.innerHTML = (new Date()).getHours() + ":" + (new Date()).getMinutes() 
-    + "&nbsp;|&nbsp;" + dateFormat(new Date(),"dddd, mmmm dS, yyyy");
+   function displayDateTime() {                                                  
+    var displayTime = document.getElementById("time");                          
+    var time =  (new Date()).getHours() + ":" + (new Date()).getMinutes();      
+    var hr = time.split(":")[0];                                                
+    var min = time.split(":")[1];                                               
+                                                                                
+    if(hr.length < 2)                                                           
+      hr = "0" + hr;                                                            
+                                                                                
+    if(min.length < 2)                                                          
+      min = "0" + min;                                                          
+                                                                                
+    displayTime.innerHTML = hr + ":" + min                                      
+    + "&nbsp;|&nbsp;" + dateFormat(new Date(),"dddd, mmmm dS, yyyy");           
   }
-
+ 
   displayDateTime();
   setInterval("displayDateTime();",1000);
 </script>
